@@ -7,6 +7,9 @@ import pro.sky.librarieshwork.exceptions.EmployeeExistsException;
 import pro.sky.librarieshwork.exceptions.NoEmployeeFoundException;
 import pro.sky.librarieshwork.service.EmployeeService;
 
+
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +25,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private String getKey(Employee employee) {
+
         return getKey(employee.getFirstName(), employee.getLastName());
     }
 
@@ -29,9 +33,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return firstName + " " + lastName;
     }
 
-    public static Employee infoCheck(String firstName, String lastName) {
+    private Employee infoCheck(String firstName, String lastName) {
         Employee employee = new Employee(firstName, lastName);
-        if(!StringUtils.isAlpha(firstName) || !StringUtils.isAlpha(lastName)){
+        if (!StringUtils.isAlpha(firstName) || !StringUtils.isAlpha(lastName)) {
             throw new BadRequestException();
         }
         return employee;
@@ -41,7 +45,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee add(String firstName, String lastName, int department, int salary) {
         Employee employee = new Employee(firstName, lastName, department, salary);
         String key = getKey(employee);
-        employee.infoCheck(StringUtils.capitalize(firstName), StringUtils.capitalize(lasrName));
+        employee.infoCheck(StringUtils.capitalize(firstName), StringUtils.capitalize(lastName));
         if (employees.containsKey(key)) {
             throw new EmployeeExistsException();
         }
@@ -53,7 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee remove(String firstName, String lastName) {
         Employee employee = new Employee(firstName, lastName);
         String key = getKey(employee);
-        employee.infoCheck(StringUtils.capitalize(firstName), StringUtils.capitalize(lasrName));
+        employee.infoCheck(StringUtils.capitalize(firstName), StringUtils.capitalize(lastName));
         if (employees.containsKey(key)) {
             throw new NoEmployeeFoundException();
         }
@@ -65,7 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee find(String firstName, String lastName) {
         Employee employee = new Employee(firstName, lastName);
         String key = getKey(employee);
-        employee.infoCheck(StringUtils.capitalize(firstName), StringUtils.capitalize(lasrName));
+        employee.infoCheck(StringUtils.capitalize(firstName), StringUtils.capitalize(lastName));
         if (!employees.containsKey(key)) {
             throw new NoEmployeeFoundException();
         }
